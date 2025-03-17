@@ -3,111 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleaner Attendance System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: auto;
-        }
-        input, select, button {
-            margin: 10px;
-            padding: 10px;
-            width: 90%;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        #attendanceList {
-            margin-top: 20px;
-            text-align: left;
-        }
-        img {
-            width: 100px;
-            height: auto;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-        .entry {
-            background: #fff;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <title>Cleaner Attendance</title>
 </head>
 <body>
+    <h1>Cleaner Attendance</h1>
+    
+    <!-- Your form inputs -->
+    <input type="text" id="nameInput" placeholder="Enter Name">
+    <select id="daySelect">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <!-- Add other days -->
+    </select>
+    <button onclick="markAttendance()">Mark Attendance</button>
+    
+    <div id="attendanceList"></div>
 
-    <div class="container">
-        <h2>Cleaner Attendance</h2>
-        
-        <input type="text" id="cleanerName" placeholder="Enter Cleaner Name" required>
-        
-        <select id="cleaningDay">
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-        </select>
-
-        <!-- Button to trigger image selection in MIT App Inventor -->
-        <button onclick="chooseImage()">Select Image</button>
-        <img id="previewImage" src="" style="display:none; width:100px; height:auto; margin-top:10px; border-radius:5px;">
-        <button onclick="markAttendance()">Mark Attendance</button>
-        
-        <h3>Attendance Records</h3>
-        <div id="attendanceList"></div>
-    </div>
-
+    <!-- Your script section -->
     <script>
-        function chooseImage() {
-            // Send a request to MIT App Inventor to open image picker
-            AppInventor.setWebViewString("ChooseImage");
-        }
-
         function receiveImage(imagePath) {
-            let preview = document.getElementById("previewImage");
-            preview.src = imagePath;
-            preview.style.display = "block";
-            preview.setAttribute("data-image", imagePath); // Store the image path for later use
+            let imgElement = document.createElement("img");
+            imgElement.src = imagePath;
+            imgElement.style.width = "100px"; 
+            document.getElementById("attendanceList").appendChild(imgElement);
         }
 
         function markAttendance() {
-            let name = document.getElementById("cleanerName").value;
-            let cleaningDay = document.getElementById("cleaningDay").value;
-            let previewImage = document.getElementById("previewImage");
-            let attendanceList = document.getElementById("attendanceList");
-
-            if (name.trim() === "" || !previewImage.src || previewImage.style.display === "none") {
-                alert("Please enter a name, select a day, and choose an image.");
+            let name = document.getElementById("nameInput").value;
+            let day = document.getElementById("daySelect").value;
+            
+            if (name === "" || day === "") {
+                alert("Please enter a name, select a day, and take a photo.");
                 return;
             }
-
-            let newEntry = document.createElement("div");
-            newEntry.classList.add("entry");
-            newEntry.innerHTML = `<strong>${name}</strong> - Cleaned on <strong>${cleaningDay}</strong> <br>
-                                  <small>${new Date().toLocaleString()}</small> <br>
-                                  <img src="${previewImage.getAttribute("data-image")}" alt="Cleaning Proof">`;
-            attendanceList.prepend(newEntry);
-
-            // Clear input fields
-            document.getElementById("cleanerName").value = "";
-            document.getElementById("cleaningDay").value = "Monday";
-            previewImage.style.display = "none";
-            previewImage.removeAttribute("data-image");
+            
+            alert("Attendance marked for " + name + " on " + day);
         }
     </script>
-
 </body>
 </html>
-
